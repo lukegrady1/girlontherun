@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/*
+  GirlOnTheRun — design tokens
+
+  Pulled from Tam's own brand: the red crossed-arrows logo, black-and-white
+  damask in the suite, red shelving, studded nameplate. So: ink black, warm
+  paper white, one signal red, and a blush pink that belongs to HairPeace
+  alone. Type is Archivo on its width axis: ultra-condensed uppercase for
+  display (poster/streetwear), normal width for reading. DM Mono does the
+  price tags and labels, like a hang tag.
+*/
+
+@theme {
+  --color-paper: #f5f2ec;
+  --color-paper-deep: #ebe6dc;
+  --color-card: #fffdf9;
+  --color-ink: #0f0f10;
+  --color-ink-soft: #2a2a2c;
+  --color-muted: #5b5b5f;
+  --color-line: #d8d2c6;
+
+  /* Signal red. #d0202a on paper is 5.2:1; white on it is 5.6:1. */
+  --color-red: #d0202a;
+  --color-red-deep: #a3151d;
+  /* HairPeace blush. Used only on the HairPeace sections. */
+  --color-blush: #f3d6d3;
+  --color-blush-deep: #e8b9b4;
+
+  --font-sans: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, monospace;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  --animate-marquee: marquee 38s linear infinite;
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+  scroll-padding-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-red);
+  color: #fff;
+}
+
+@layer components {
+  /* Poster type: Archivo squeezed to its narrowest width, heavy, uppercase. */
+  .t-poster {
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 62;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.86;
+  }
+  .t-headline {
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 75;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 0.95;
+  }
+  .t-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    padding: 0 1.5rem;
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 80;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+    border-radius: 0;
+    transition:
+      background-color 180ms var(--ease-out),
+      color 180ms var(--ease-out),
+      transform 180ms var(--ease-out),
+      box-shadow 180ms var(--ease-out);
+  }
+  /* Hard offset shadow: the button "lifts" off the page like a sticker. */
+  .btn-red {
+    background: var(--color-red);
+    color: #fff;
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
+  .btn-red:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-ink);
+  }
+  .btn-red:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-ink);
+  }
+  .btn-red-on-dark {
+    background: var(--color-red);
+    color: #fff;
+    box-shadow: 4px 4px 0 #fff;
+  }
+  .btn-red-on-dark:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 #fff;
+  }
+  .btn-ink {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .btn-ink:hover {
+    background: var(--color-red);
+  }
+  .btn-line {
+    background: transparent;
+    color: var(--color-ink);
+    box-shadow: inset 0 0 0 2px var(--color-ink);
+  }
+  .btn-line:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .btn-line-light {
+    background: transparent;
+    color: #fff;
+    box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.7);
+  }
+  .btn-line-light:hover {
+    background: #fff;
+    color: var(--color-ink);
+  }
+  .btn-sm {
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    font-size: 0.9rem;
+  }
+
+  .focus-ring:focus-visible {
+    outline: 3px solid var(--color-red);
+    outline-offset: 3px;
+  }
+
+  /* Underline that draws in from the left on hover. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 260ms var(--ease-out);
+  }
+  .link-draw:hover,
+  .link-draw[aria-current="page"] {
+    background-size: 100% 2px;
+  }
+
+  /* Printed paper grain over the dark bands, so black never reads flat. */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /*
+    Black lace for HairPeace: scalloped rings on a tight grid. Pure CSS so it
+    scales without an image request.
+  */
+  .lace {
+    background-color: var(--color-ink);
+    background-image:
+      radial-gradient(circle at 50% 50%, transparent 9px, rgb(243 214 211 / 0.12) 10px, transparent 11px),
+      radial-gradient(circle at 0 0, transparent 9px, rgb(243 214 211 / 0.09) 10px, transparent 11px),
+      radial-gradient(circle at 50% 50%, rgb(243 214 211 / 0.14) 1.5px, transparent 2px);
+    background-size:
+      28px 28px,
+      28px 28px,
+      14px 14px;
+  }
+
+  /* Taped-photo look for the hero collage. */
+  .tape {
+    position: absolute;
+    width: 5.5rem;
+    height: 1.6rem;
+    background: rgb(245 242 236 / 0.78);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Privacy Policy and Terms: plain prose, one column. */
+.legal {
+  color: var(--color-ink-soft);
+  line-height: 1.7;
+}
+.legal h2 {
+  margin-top: 2.5rem;
+  font-variation-settings: "wdth" 75;
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+.legal p,
+.legal ul {
+  margin-top: 0.9rem;
+}
+.legal ul {
+  padding-left: 1.25rem;
+  list-style: square;
+}
+.legal li + li {
+  margin-top: 0.35rem;
+}
+.legal li::marker {
+  color: var(--color-red);
+}
+.legal strong {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+.legal a {
+  color: var(--color-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--color-red);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.legal a:hover {
+  color: var(--color-red);
+}
+
+/* Scroll reveal. Elements start visible if JS never runs. */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reveal[data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  .reveal[data-reveal="in"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 700ms var(--ease-out),
+      transform 700ms var(--ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
