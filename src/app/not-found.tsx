@@ -23,12 +23,12 @@ export default function NotFound() {
         }
         intro="The link may be old or mistyped. Everything else is right here."
       />
-      <section className="py-14 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="px-3 py-10 sm:px-5 sm:py-14">
+        <div className="mx-auto max-w-7xl">
           <ul className="flex flex-wrap gap-3">
             {nav.map((n) => (
               <li key={n.href}>
-                <Link href={n.href} className="btn btn-line focus-ring">
+                <Link href={n.href} className="btn btn-white focus-ring">
                   {n.label}
                 </Link>
               </li>

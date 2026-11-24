@@ -1,70 +1,59 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BookButton } from "./BookButton";
+import { Sparkle } from "./XMark";
 import { formatPrice, photos, serviceGroups } from "@/lib/site";
 
 const pieces = serviceGroups.find((g) => g.id === "hairpeace")!.services;
-/* The two lace pieces get the big tags; the rest list underneath. */
 const hero = pieces.filter((p) => p.name === "TheGarter" || p.name === "ThePanty");
 
 /*
-  HairPeace on black lace with the blush accent: the one place blush
-  appears on the site, so it reads as its own label inside the brand.
+  HairPeace as a mini bento: a big ink tile with the pitch on the left;
+  on the right, two photo tiles over the two lace pieces as pink
+  "price tag" tiles.
 */
 export function HairPeaceFeature({ compact = false }: { compact?: boolean }) {
   return (
-    <section className="lace relative overflow-hidden text-paper">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1fr_1.05fr] lg:items-center">
-        <div className="relative order-2 lg:order-1">
-          <div className="relative aspect-[8/7] w-full border-4 border-blush">
-            <Image src={photos.hairCloset.src} alt={photos.hairCloset.alt} fill sizes="(min-width: 1024px) 40rem, 100vw" className="object-cover" />
-          </div>
-          <div className="absolute -bottom-8 -right-2 w-[42%] rotate-[5deg] border-4 border-blush bg-blush sm:-right-6">
-            <div className="relative aspect-[488/800]">
-              <Image src={photos.popPeace.src} alt={photos.popPeace.alt} fill sizes="16rem" className="object-cover" />
-            </div>
-          </div>
-        </div>
-
-        <div className="order-1 lg:order-2">
-          <p className="t-tag text-blush">The HairCloset · Patent pending</p>
-          <h2 className="t-poster mt-4 text-7xl text-blush sm:text-8xl lg:text-[8.5rem]">
-            Hair<br />Peace.
-          </h2>
-          <p className="mt-2 font-mono text-lg text-paper/80">Hair lingerie, sewn by hand.</p>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-paper/85">
-            One-peace clip-ins of 100% Remy human hair, sewn by Tam onto feather-light black lace
-            with the finest silk thread and snag-proof clips. Small, medium, or large; 14, 16, or
-            18 inches; light, medium, or dark, then color-blended to you. About a three-minute
-            application.
+    <div className="grid gap-3 lg:grid-cols-12">
+      <div className="tile relative min-w-0 bg-ink p-7 text-white sm:p-10 lg:col-span-7 lg:row-span-3">
+        <Sparkle className="animate-spin-slow absolute right-7 top-7 h-10 w-10 text-pink" />
+        <span className="sticker !bg-pink">The HairCloset · Patent pending</span>
+        <h2 className="t-display mt-6 text-6xl sm:text-8xl">
+          Hair<span className="text-pink">Peace</span>
+        </h2>
+        <p className="t-display mt-2 text-2xl text-butter sm:text-3xl">Hair lingerie, sewn by hand.</p>
+        <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80">
+          One-peace clip-ins of 100% Remy human hair, sewn by Tam onto feather-light black lace with the
+          finest silk thread and snag-proof clips. Small, medium, or large; 14, 16, or 18 inches; light,
+          medium, or dark, then color-blended to you. About a three-minute application.
+        </p>
+        {!compact && (
+          <p className="mt-4 text-sm text-white/65">
+            Also: POP Peace, L7s, DreadHead, and FauxCut, the short-hair fix with no grow-out.
           </p>
-
-          <ul className="mt-8 grid gap-4 sm:grid-cols-2">
-            {hero.map((p) => (
-              <li key={p.name} className="border-2 border-blush/60 p-5">
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="t-headline text-2xl text-blush">{p.name}</span>
-                  <span className="font-mono text-lg">{formatPrice(p)}</span>
-                </div>
-                <p className="mt-2 text-sm leading-relaxed text-paper/75">{p.description}</p>
-              </li>
-            ))}
-          </ul>
-
-          {!compact && (
-            <p className="mt-4 text-sm text-paper/70">
-              Also: POP Peace, L7s, DreadHead, and FauxCut, the short-hair fix with no grow-out.
-            </p>
-          )}
-
-          <div className="mt-9 flex flex-wrap gap-4">
-            <BookButton className="btn btn-red-on-dark">Book a measuring</BookButton>
-            <Link href="/hairpeace/" className="btn btn-line-light focus-ring">
-              Inside HairPeace
-            </Link>
-          </div>
+        )}
+        <div className="mt-8 flex flex-wrap gap-3">
+          <BookButton className="btn btn-pink !border-white !shadow-[0_4px_0_#fff]">Book a measuring</BookButton>
+          <Link href="/hairpeace/" className="btn btn-ink focus-ring !border-white !shadow-[0_4px_0_#fff]">
+            Shop the collection
+          </Link>
         </div>
       </div>
-    </section>
+      <div className="tile relative min-h-64 bg-pink lg:col-span-3">
+        <Image src={photos.hairCloset.src} alt={photos.hairCloset.alt} fill sizes="(min-width: 1024px) 20rem, 100vw" className="object-cover" />
+      </div>
+      <div className="tile relative min-h-64 bg-pink lg:col-span-2">
+        <Image src={photos.popPeace.src} alt={photos.popPeace.alt} fill sizes="(min-width: 1024px) 14rem, 100vw" className="object-cover object-bottom" />
+      </div>
+      {hero.map((p) => (
+        <div key={p.name} className="tile flex min-w-0 flex-col justify-between gap-4 bg-pink p-6 lg:col-span-5">
+          <div className="flex items-baseline justify-between gap-3">
+            <span className="t-display text-3xl">{p.name}</span>
+            <span className="sticker !text-base">{formatPrice(p)}</span>
+          </div>
+          <p className="text-sm leading-relaxed text-ink-soft">{p.description}</p>
+        </div>
+      ))}
+    </div>
   );
 }

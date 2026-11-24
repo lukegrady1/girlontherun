@@ -1,33 +1,52 @@
-import { XMark } from "./XMark";
+import Image from "next/image";
+import { Sparkle } from "./XMark";
+
+const BG = {
+  pink: "bg-pink",
+  butter: "bg-butter",
+  mint: "bg-mint",
+  cobalt: "bg-cobalt text-white",
+} as const;
 
 /*
-  Inner-page title: a numbered tag, a poster headline, and a hard rule.
-  The X watermark sits behind the right side on wide screens.
+  Inner-page title as a big colored tile: sticker label, chunky headline,
+  intro. With an `image`, a photo tile sits beside it (under it on phones).
 */
 export function PageHeader({
   index,
   eyebrow,
   title,
   intro,
+  image,
+  color = "pink",
   children,
 }: {
   index?: string;
   eyebrow: string;
   title: React.ReactNode;
   intro?: React.ReactNode;
+  image?: { src: string; alt: string; position?: string };
+  color?: keyof typeof BG;
   children?: React.ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden border-b-2 border-ink">
-      <XMark className="pointer-events-none absolute -right-10 top-1/2 hidden h-80 w-80 -translate-y-1/2 text-ink/[0.05] md:block" />
-      <div className="relative mx-auto max-w-7xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
-        <p className="t-tag flex items-center gap-3 text-red">
-          {index && <span className="bg-red px-1.5 py-0.5 text-white">{index}</span>}
-          {eyebrow}
-        </p>
-        <h1 className="t-poster mt-4 max-w-5xl text-[3.4rem] sm:text-7xl lg:text-[7.5rem]">{title}</h1>
-        {intro && <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">{intro}</p>}
-        {children}
+    <section className="px-3 pt-6 sm:px-5">
+      <div className={`mx-auto grid max-w-7xl gap-3 ${image ? "lg:grid-cols-[1.6fr_1fr]" : ""}`}>
+        <div className={`tile relative min-w-0 p-7 sm:p-12 ${BG[color]}`}>
+          <Sparkle className="absolute right-6 top-6 hidden h-10 w-10 opacity-80 sm:block" />
+          <p className="flex flex-wrap items-center gap-2">
+            {index && <span className="sticker !bg-ink !text-white">{index}</span>}
+            <span className="sticker">{eyebrow}</span>
+          </p>
+          <h1 className="t-display mt-6 max-w-4xl text-[3.2rem] [overflow-wrap:anywhere] sm:text-7xl lg:text-[6rem]">{title}</h1>
+          {intro && <p className="mt-6 max-w-2xl text-lg leading-relaxed opacity-85">{intro}</p>}
+          {children}
+        </div>
+        {image && (
+          <div className="tile relative min-h-72 bg-paper-deep">
+            <Image src={image.src} alt={image.alt} fill priority sizes="(min-width: 1024px) 30rem, 100vw" className={`object-cover ${image.position ?? ""}`} />
+          </div>
+        )}
       </div>
     </section>
   );

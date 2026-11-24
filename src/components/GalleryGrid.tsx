@@ -6,10 +6,12 @@ import { ArrowLeft, ArrowRight, X } from "@phosphor-icons/react";
 import type { GalleryItem } from "@/lib/site";
 
 /*
-  Uneven grid of work with a tag on each tile. Tapping opens a <dialog>
-  lightbox (native focus trap, Escape to close, arrow keys to step).
+  Grid of rounded, outlined photo tiles with a sticker tag on each; tiles in
+  `big` are double size. Tapping opens a <dialog> lightbox (native
+  focus trap, Escape to close, arrow keys to step). `big` lists the tiles
+  that span 2×2; pick them so the cell count fills whole rows of four.
 */
-export function GalleryGrid({ items }: { items: GalleryItem[] }) {
+export function GalleryGrid({ items, big = [0] }: { items: GalleryItem[]; big?: number[] }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(0);
 
@@ -38,13 +40,13 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
 
   return (
     <>
-      <ul className="grid auto-rows-[11rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[15rem] sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <ul className="grid auto-rows-[12rem] grid-flow-row-dense grid-cols-2 gap-3 sm:auto-rows-[16rem] md:grid-cols-3 lg:grid-cols-4">
         {items.map((g, i) => (
-          <li key={g.src} className={i % 7 === 0 ? "row-span-2" : ""}>
+          <li key={g.src} className={big.includes(i) ? "col-span-2 row-span-2" : ""}>
             <button
               type="button"
               onClick={() => open(i)}
-              className="focus-ring group relative block h-full w-full overflow-hidden bg-ink"
+              className="tile tile-link focus-ring group relative block h-full w-full bg-paper-deep"
               aria-label={`View larger: ${g.alt}`}
             >
               <Image
@@ -52,9 +54,9 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
                 alt={g.alt}
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-                className="object-cover transition duration-500 group-hover:scale-[1.04] group-hover:opacity-80"
+                className="object-cover transition duration-500 group-hover:scale-[1.05]"
               />
-              <span className="t-tag absolute bottom-0 left-0 bg-paper px-2 py-1 text-ink">{g.tag}</span>
+              <span className={`sticker absolute bottom-3 left-3 ${["!bg-pink", "!bg-butter", "!bg-mint"][i % 3]}`}>{g.tag}</span>
             </button>
           </li>
         ))}
@@ -62,18 +64,18 @@ export function GalleryGrid({ items }: { items: GalleryItem[] }) {
 
       <dialog
         ref={ref}
-        className="m-auto max-h-[92dvh] w-[min(92vw,56rem)] bg-transparent p-0 backdrop:bg-ink/90"
+        className="m-auto max-h-[92dvh] w-[min(92vw,56rem)] bg-transparent p-0 backdrop:bg-ink/80"
         onClick={(e) => {
           if (e.target === ref.current) ref.current?.close();
         }}
       >
-        <div className="relative bg-ink">
+        <div className="tile relative bg-ink">
           <div className="relative h-[78dvh]">
             <Image src={current.src} alt={current.alt} fill sizes="92vw" className="object-contain" />
           </div>
-          <div className="flex items-center justify-between gap-3 bg-paper px-3 py-2">
+          <div className="flex items-center justify-between gap-3 border-t-2 border-ink bg-white px-3 py-2">
             <p className="text-sm text-ink">
-              <span className="t-tag mr-2 text-red">{current.tag}</span>
+              <span className="sticker mr-2 !bg-pink">{current.tag}</span>
               {current.alt}
             </p>
             <div className="flex shrink-0 gap-1">

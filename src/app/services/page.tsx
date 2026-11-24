@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BookButton } from "@/components/BookButton";
 import { CtaBand } from "@/components/CtaBand";
 import { PageHeader } from "@/components/PageHeader";
-import { ServiceMenu } from "@/components/ServiceMenu";
+import { ServiceTabs } from "@/components/ServiceTabs";
 import { allServices } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -18,6 +18,7 @@ export default function ServicesPage() {
       <PageHeader
         index="Menu"
         eyebrow={`${allServices.length} services · every price listed`}
+        color="mint"
         title={
           <>
             The <span className="text-red">whole</span> menu.
@@ -29,8 +30,16 @@ export default function ServicesPage() {
           <BookButton />
         </div>
       </PageHeader>
-      <ServiceMenu />
-      <CtaBand title="Can’t decide?" sub="Book a free HairChat." />
+      <section className="px-3 py-10 sm:px-5 sm:py-14">
+        <div className="mx-auto max-w-7xl">
+          <ServiceTabs />
+          <p className="mt-8 max-w-2xl text-sm text-muted">
+            Prices are Tam’s current Vagaro menu. “From” prices depend on length, density, and history;
+            your HairChat sets the real number. Vagaro offers Affirm on orders over $50.
+          </p>
+        </div>
+      </section>
+      <CtaBand title="Can’t decide?" sub="Book a free HairChat and figure it out together." />
     </>
   );
 }

@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { site } from "@/lib/site";
 
 /*
-  Open Graph card, rendered at build time. Archivo ExtraBold Condensed is
+  Open Graph card, rendered at build time. Bricolage Grotesque ExtraBold is
   fetched from Google Fonts; if that fails the card falls back to the
   default sans so a font outage never breaks a deploy.
 */
@@ -15,7 +15,7 @@ export const contentType = "image/png";
 async function loadFont(): Promise<ArrayBuffer | null> {
   try {
     const css = await fetch(
-      "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5,800&display=swap",
+      "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@800&display=swap",
       { headers: { "User-Agent": "Mozilla/5.0" } },
     ).then((r) => r.text());
     const url = css.match(/src: url\((https:[^)]+\.(?:ttf|woff))\)/)?.[1];
@@ -41,43 +41,34 @@ function X({ size: s, color }: { size: number; color: string }) {
 
 export default async function Image() {
   const font = await loadFont();
-  const family = font ? "Archivo" : "sans-serif";
+  const family = font ? "Bricolage Grotesque" : "sans-serif";
 
+  const tile = { display: "flex", border: "5px solid #17131a", borderRadius: 40 } as const;
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: 64,
-          background: "#0f0f10",
-          color: "#f5f2ec",
-          fontFamily: family,
-          position: "relative",
-        }}
-      >
-        <div style={{ position: "absolute", right: -60, top: 40, display: "flex", opacity: 0.95 }}>
-          <X size={520} color="#d0202a" />
+      <div style={{ width: "100%", height: "100%", display: "flex", gap: 20, padding: 32, background: "#fff8f1", fontFamily: family, color: "#17131a" }}>
+        <div style={{ ...tile, flex: 1.6, flexDirection: "column", justifyContent: "space-between", padding: 48, background: "#ffe45e" }}>
+          <div style={{ display: "flex", fontSize: 28, fontWeight: 800, letterSpacing: 1 }}>HAIR SALON &amp; EXTENSIONS · SHREWSBURY, NJ</div>
+          <div style={{ display: "flex", flexDirection: "column", fontSize: 118, fontWeight: 800, lineHeight: 0.92, letterSpacing: -4 }}>
+            <span>Girls run</span>
+            <span style={{ color: "#d9261c" }}>the world.</span>
+          </div>
+          <div style={{ display: "flex", fontSize: 34, fontWeight: 800 }}>girlontherun · tam.i.am</div>
         </div>
-        <div style={{ display: "flex", fontSize: 30, letterSpacing: 3, color: "#c9c4bb" }}>
-          SHREWSBURY, NJ · LICENSED SINCE {site.since}
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", fontSize: 150, fontWeight: 800, lineHeight: 0.86, textTransform: "uppercase" }}>
-          <span>Girls run</span>
-          <span>the world.</span>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", fontSize: 40, fontWeight: 800, textTransform: "uppercase" }}>
-          <span>GirlOnTheRun · tam.i.am</span>
-          <span style={{ background: "#d0202a", color: "#fff", padding: "6px 18px" }}>Book on Vagaro</span>
+        <div style={{ display: "flex", flex: 1, flexDirection: "column", gap: 20 }}>
+          <div style={{ ...tile, flex: 1, alignItems: "center", justifyContent: "center", background: "#d9261c" }}>
+            <X size={190} color="#fff" />
+          </div>
+          <div style={{ ...tile, flex: 1, flexDirection: "column", justifyContent: "center", padding: 36, background: "#2f3dff", color: "#fff" }}>
+            <span style={{ fontSize: 30, fontWeight: 800, color: "#ffe45e" }}>Since {site.since}</span>
+            <span style={{ fontSize: 56, fontWeight: 800 }}>Book on Vagaro</span>
+          </div>
         </div>
       </div>
     ),
     {
       ...size,
-      ...(font ? { fonts: [{ name: "Archivo", data: font, weight: 800 as const, style: "normal" as const }] } : {}),
+      ...(font ? { fonts: [{ name: "Bricolage Grotesque", data: font, weight: 800 as const, style: "normal" as const }] } : {}),
     },
   );
 }

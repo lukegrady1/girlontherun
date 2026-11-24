@@ -15,9 +15,9 @@ export function LegalPage({
 }) {
   return (
     <>
-      <PageHeader eyebrow={eyebrow} title={title} intro={`Last updated ${updated}.`} />
-      <section className="py-14 sm:py-20">
-        <article className="legal mx-auto max-w-3xl px-4 sm:px-6">{children}</article>
+      <PageHeader color="mint" eyebrow={eyebrow} title={title} intro={`Last updated ${updated}.`} />
+      <section className="px-3 py-10 sm:px-5 sm:py-14">
+        <article className="legal tile mx-auto max-w-3xl bg-white p-7 sm:p-12">{children}</article>
       </section>
     </>
   );

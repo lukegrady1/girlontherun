@@ -33,6 +33,9 @@ npm run lint
 
 ## Design
 
+> **Branch `third-design`** is the "Pop" direction, the third option for the client next to `main` (poster) and `different-design` (editorial). Same pages, content, and `site.ts`; new look: Bricolage Grotesque, a bento layout of rounded ink-outlined `.tile`s in tomato red, bubblegum `pink`, `cobalt`, `butter`, and `mint`, pill `.sticker` labels, sparkles, a floating pill header, and the service menu as tabs (`ServiceTabs`; every panel stays in the HTML, the URL hash picks the tab). The home H1 is keyword-led ("Hair Salon & Extensions in Shrewsbury, NJ: Girls run the world."). The notes below describe `main`.
+
+
 Pulled from Tam's brand: red crossed-arrows logo, black-and-white damask suite, red shelving. Ink black, warm paper, one signal red (`--color-red`), and blush (`--color-blush`) used only for HairPeace. Poster headlines are Archivo at `wdth 62`, uppercase (`.t-poster`). Buttons are square with a hard offset shadow. HairPeace sections use the CSS `.lace` pattern.
 
 ## Booking

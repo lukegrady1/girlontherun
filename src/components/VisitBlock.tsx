@@ -3,41 +3,51 @@ import { HoursTable } from "./HoursTable";
 import { OpenNow } from "./OpenNow";
 import { fullAddress, site, visit } from "@/lib/site";
 
-/* Address, hours, and map in one bordered slab. */
+/* Three tiles: where (mint), when (white), and the map. */
 export function VisitBlock() {
   return (
-    <div className="grid border-2 border-ink bg-card lg:grid-cols-[1fr_1.1fr]">
-      <div className="p-6 sm:p-10">
-        <OpenNow className="text-ink" />
-        <h3 className="t-headline mt-4 text-3xl">Find the suite</h3>
-        <p className="mt-3 flex gap-2 text-lg">
-          <MapPin size={24} weight="fill" className="mt-0.5 shrink-0 text-red" aria-hidden="true" />
-          <span>{fullAddress}</span>
-        </p>
-        <p className="mt-1 pl-8 text-sm text-muted">{visit.parking}</p>
-
-        <div className="mt-6 flex flex-wrap gap-3">
+    <div className="grid gap-3 lg:grid-cols-3">
+      <div className="tile flex flex-col justify-between gap-8 bg-mint p-7">
+        <div>
+          <p className="t-tag">Where</p>
+          <p className="t-display mt-3 flex gap-2 text-3xl">
+            <MapPin size={30} weight="fill" className="shrink-0 text-red" aria-hidden="true" />
+            <span>{site.address.line1}</span>
+          </p>
+          <p className="mt-2 text-ink-soft">
+            {site.address.unit}
+            <br />
+            {site.address.city}, {site.address.state} {site.address.zip}
+          </p>
+          <p className="sticker mt-4">{visit.parking}</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
           <a href={site.mapsHref} target="_blank" rel="noopener noreferrer" className="btn btn-ink btn-sm focus-ring">
-            <NavigationArrow size={18} weight="bold" aria-hidden="true" />
+            <NavigationArrow size={16} weight="bold" aria-hidden="true" />
             Directions
           </a>
-          <a href={site.phoneHref} className="btn btn-line btn-sm focus-ring">
-            <Phone size={18} weight="bold" aria-hidden="true" />
+          <a href={site.phoneHref} className="btn btn-white btn-sm focus-ring">
+            <Phone size={16} weight="bold" aria-hidden="true" />
             {site.phone}
           </a>
         </div>
-
-        <div className="mt-8">
+      </div>
+      <div className="tile bg-white p-7">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="t-tag">When</p>
+          <OpenNow className="text-muted" />
+        </div>
+        <div className="mt-3">
           <HoursTable />
         </div>
       </div>
-      <div className="relative min-h-80 border-t-2 border-ink lg:border-l-2 lg:border-t-0">
+      <div className="tile relative min-h-80 bg-paper-deep">
         <iframe
           src={site.mapsEmbedSrc}
           title={`Map to ${site.name}, ${fullAddress}`}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          className="absolute inset-0 h-full w-full grayscale-[0.6] contrast-[1.05]"
+          className="absolute inset-0 h-full w-full"
         />
       </div>
     </div>

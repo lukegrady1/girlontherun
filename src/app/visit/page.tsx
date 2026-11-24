@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { CtaBand } from "@/components/CtaBand";
 import { PageHeader } from "@/components/PageHeader";
 import { VisitBlock } from "@/components/VisitBlock";
-import { XMark } from "@/components/XMark";
-import { fullAddress, site, visit } from "@/lib/site";
+import { fullAddress, photos, site, visit } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Visit · Hours & Directions",
@@ -32,24 +31,23 @@ export default function VisitPage() {
           </>
         }
         intro={`${site.address.unit}. Open seven days a week, with late nights till 9 on Friday and Saturday.`}
+        color="butter"
+        image={{ src: photos.suite.src, alt: photos.suite.alt }}
       />
-      <section className="py-14 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="px-3 py-10 sm:px-5 sm:py-14">
+        <div className="mx-auto max-w-7xl">
           <VisitBlock />
-          <dl className="mt-14 grid gap-px border-2 border-ink bg-ink sm:grid-cols-2 lg:grid-cols-3">
-            {FACTS.map((f) => (
-              <div key={f.label} className="bg-card p-6">
-                <dt className="t-tag flex items-center gap-2 text-red">
-                  <XMark className="h-3 w-3" />
-                  {f.label}
-                </dt>
-                <dd className="mt-2 leading-relaxed">{f.value}</dd>
+          <dl className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {FACTS.map((f, i) => (
+              <div key={f.label} className={`tile p-6 ${["bg-pink", "bg-white", "bg-mint"][i % 3]}`}>
+                <dt className="t-display text-2xl">{f.label}</dt>
+                <dd className="mt-2 leading-relaxed text-ink-soft">{f.value}</dd>
               </div>
             ))}
           </dl>
         </div>
       </section>
-      <CtaBand title="See you" sub="on Broad St." />
+      <CtaBand title="See you on Broad St." sub="Free parking, right out front." />
     </>
   );
 }

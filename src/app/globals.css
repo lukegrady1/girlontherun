@@ -1,57 +1,69 @@
 @import "tailwindcss";
 
 /*
-  GirlOnTheRun — design tokens
+  GirlOnTheRun — "Pop" direction (branch: third-design)
 
-  Pulled from Tam's own brand: the red crossed-arrows logo, black-and-white
-  damask in the suite, red shelving, studded nameplate. So: ink black, warm
-  paper white, one signal red, and a blush pink that belongs to HairPeace
-  alone. Type is Archivo on its width axis: ultra-condensed uppercase for
-  display (poster/streetwear), normal width for reading. DM Mono does the
-  price tags and labels, like a hang tag.
+  The third take on Tam's brand. Main is a black-and-red street poster;
+  different-design is a wine-and-serif editorial. This one is loud and
+  playful, after the "Run wild and get HairPiercing, because... why not??"
+  sign and the rainbow peekaboos in her gallery: a bento layout of rounded,
+  ink-outlined tiles in tomato red, bubblegum, cobalt, and butter, set in
+  Bricolage Grotesque, with stickers and sparkles.
+
+  Token names follow main (ink, paper, card, red...) plus pink, cobalt,
+  butter.
 */
 
 @theme {
-  --color-paper: #f5f2ec;
-  --color-paper-deep: #ebe6dc;
-  --color-card: #fffdf9;
-  --color-ink: #0f0f10;
-  --color-ink-soft: #2a2a2c;
-  --color-muted: #5b5b5f;
-  --color-line: #d8d2c6;
+  --color-paper: #fff8f1;
+  --color-paper-deep: #f6ece2;
+  --color-card: #ffffff;
+  --color-ink: #17131a;
+  --color-ink-soft: #3a3340;
+  --color-muted: #6a6170;
+  --color-line: #17131a;
 
-  /* Signal red. #d0202a on paper is 5.2:1; white on it is 5.6:1. */
-  --color-red: #d0202a;
-  --color-red-deep: #a3151d;
-  /* HairPeace blush. Used only on the HairPeace sections. */
-  --color-blush: #f3d6d3;
-  --color-blush-deep: #e8b9b4;
+  /* Tomato red, Tam's red turned up. White on it is 4.6:1. */
+  --color-red: #d9261c;
+  --color-red-deep: #b01c14;
+  --color-pink: #ffc4dd;
+  --color-pink-deep: #ff8fc0;
+  --color-cobalt: #2f3dff;
+  --color-butter: #ffe45e;
+  --color-mint: #bff0d4;
 
-  --font-sans: var(--font-archivo), "Archivo", system-ui, sans-serif;
-  --font-mono: var(--font-dm-mono), ui-monospace, monospace;
+  --font-sans: var(--font-bricolage), "Bricolage Grotesque", system-ui, sans-serif;
+  --font-mono: var(--font-bricolage), system-ui, sans-serif;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  --animate-marquee: marquee 38s linear infinite;
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
+  --animate-wiggle: wiggle 2.8s var(--ease-out) infinite;
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-8deg);
     }
-    to {
-      transform: translateX(-50%);
+    50% {
+      transform: rotate(8deg);
     }
   }
+  --animate-spin-slow: spin 14s linear infinite;
 }
 
 html {
   scroll-behavior: smooth;
   color-scheme: light;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 6.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .animate-wiggle,
+  .animate-spin-slow {
+    animation: none;
   }
 }
 
@@ -64,168 +76,123 @@ body {
 }
 
 ::selection {
-  background: var(--color-red);
-  color: #fff;
+  background: var(--color-pink-deep);
+  color: var(--color-ink);
 }
 
 @layer components {
-  /* Poster type: Archivo squeezed to its narrowest width, heavy, uppercase. */
-  .t-poster {
+  /* Chunky display: heavy, slightly condensed, tight. */
+  .t-display {
     font-family: var(--font-sans);
-    font-variation-settings: "wdth" 62;
     font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    line-height: 0.86;
-  }
-  .t-headline {
-    font-family: var(--font-sans);
-    font-variation-settings: "wdth" 75;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.005em;
-    line-height: 0.95;
+    font-variation-settings: "wdth" 85;
+    letter-spacing: -0.035em;
+    line-height: 0.9;
   }
   .t-tag {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+  }
+
+  /* The building block: rounded tile with an ink outline. */
+  .tile {
+    border: 2px solid var(--color-ink);
+    border-radius: 1.75rem;
+    overflow: hidden;
+  }
+  /* Lift on hover for tiles that are links. */
+  .tile-link {
+    transition:
+      transform 300ms var(--ease-spring),
+      box-shadow 300ms var(--ease-out);
+  }
+  .tile-link:hover {
+    transform: translateY(-4px) rotate(-0.4deg);
+    box-shadow: 0 8px 0 var(--color-ink);
   }
 
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
-    min-height: 3.25rem;
+    gap: 0.5rem;
+    min-height: 3.2rem;
     padding: 0 1.5rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
     font-family: var(--font-sans);
-    font-variation-settings: "wdth" 80;
     font-weight: 700;
     font-size: 1rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
     line-height: 1;
     white-space: nowrap;
-    border-radius: 0;
+    box-shadow: 0 4px 0 var(--color-ink);
     transition:
-      background-color 180ms var(--ease-out),
-      color 180ms var(--ease-out),
-      transform 180ms var(--ease-out),
-      box-shadow 180ms var(--ease-out);
+      transform 220ms var(--ease-spring),
+      box-shadow 220ms var(--ease-out),
+      background-color 200ms var(--ease-out);
   }
-  /* Hard offset shadow: the button "lifts" off the page like a sticker. */
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--color-ink);
+  }
+  .btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--color-ink);
+  }
   .btn-red {
     background: var(--color-red);
     color: #fff;
-    box-shadow: 4px 4px 0 var(--color-ink);
-  }
-  .btn-red:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-ink);
-  }
-  .btn-red:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--color-ink);
-  }
-  .btn-red-on-dark {
-    background: var(--color-red);
-    color: #fff;
-    box-shadow: 4px 4px 0 #fff;
-  }
-  .btn-red-on-dark:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #fff;
   }
   .btn-ink {
     background: var(--color-ink);
-    color: var(--color-paper);
-  }
-  .btn-ink:hover {
-    background: var(--color-red);
-  }
-  .btn-line {
-    background: transparent;
-    color: var(--color-ink);
-    box-shadow: inset 0 0 0 2px var(--color-ink);
-  }
-  .btn-line:hover {
-    background: var(--color-ink);
-    color: var(--color-paper);
-  }
-  .btn-line-light {
-    background: transparent;
     color: #fff;
-    box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.7);
   }
-  .btn-line-light:hover {
+  .btn-white {
     background: #fff;
     color: var(--color-ink);
   }
+  .btn-pink {
+    background: var(--color-pink);
+    color: var(--color-ink);
+  }
+  .btn-butter {
+    background: var(--color-butter);
+    color: var(--color-ink);
+  }
   .btn-sm {
-    min-height: 2.75rem;
-    padding: 0 1rem;
-    font-size: 0.9rem;
+    min-height: 2.6rem;
+    padding: 0 1.05rem;
+    font-size: 0.92rem;
+    box-shadow: 0 3px 0 var(--color-ink);
+  }
+
+  /* A chip that looks like a peel-off sticker. */
+  .sticker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    font-weight: 700;
+    font-size: 0.82rem;
+    line-height: 1.1;
+    background: #fff;
+    color: var(--color-ink);
   }
 
   .focus-ring:focus-visible {
-    outline: 3px solid var(--color-red);
+    outline: 3px solid var(--color-cobalt);
     outline-offset: 3px;
   }
 
-  /* Underline that draws in from the left on hover. */
-  .link-draw {
-    background-image: linear-gradient(currentColor, currentColor);
-    background-size: 0% 2px;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    transition: background-size 260ms var(--ease-out);
-  }
-  .link-draw:hover,
-  .link-draw[aria-current="page"] {
-    background-size: 100% 2px;
-  }
-
-  /* Printed paper grain over the dark bands, so black never reads flat. */
-  .grain {
-    position: relative;
-    isolation: isolate;
-  }
-  .grain::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.07;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /*
-    Black lace for HairPeace: scalloped rings on a tight grid. Pure CSS so it
-    scales without an image request.
-  */
-  .lace {
-    background-color: var(--color-ink);
-    background-image:
-      radial-gradient(circle at 50% 50%, transparent 9px, rgb(243 214 211 / 0.12) 10px, transparent 11px),
-      radial-gradient(circle at 0 0, transparent 9px, rgb(243 214 211 / 0.09) 10px, transparent 11px),
-      radial-gradient(circle at 50% 50%, rgb(243 214 211 / 0.14) 1.5px, transparent 2px);
-    background-size:
-      28px 28px,
-      28px 28px,
-      14px 14px;
-  }
-
-  /* Taped-photo look for the hero collage. */
-  .tape {
-    position: absolute;
-    width: 5.5rem;
-    height: 1.6rem;
-    background: rgb(245 242 236 / 0.78);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+  /* Dotted grid paper for the page background bands. */
+  .dots {
+    background-image: radial-gradient(rgb(23 19 26 / 0.13) 1.2px, transparent 1.4px);
+    background-size: 18px 18px;
   }
 
   .no-scrollbar {
@@ -236,17 +203,17 @@ body {
   }
 }
 
-/* Privacy Policy and Terms: plain prose, one column. */
+/* Privacy Policy and Terms. */
 .legal {
   color: var(--color-ink-soft);
   line-height: 1.7;
 }
 .legal h2 {
   margin-top: 2.5rem;
-  font-variation-settings: "wdth" 75;
   font-weight: 800;
-  font-size: 1.5rem;
-  text-transform: uppercase;
+  font-variation-settings: "wdth" 85;
+  letter-spacing: -0.02em;
+  font-size: 1.75rem;
   color: var(--color-ink);
 }
 .legal p,
@@ -255,7 +222,7 @@ body {
 }
 .legal ul {
   padding-left: 1.25rem;
-  list-style: square;
+  list-style: disc;
 }
 .legal li + li {
   margin-top: 0.35rem;
@@ -268,15 +235,11 @@ body {
   font-weight: 700;
 }
 .legal a {
-  color: var(--color-ink);
+  color: var(--color-cobalt);
   font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: var(--color-red);
   text-decoration-thickness: 2px;
-  text-underline-offset: 4px;
-}
-.legal a:hover {
-  color: var(--color-red);
+  text-underline-offset: 3px;
 }
 
 /* Scroll reveal. Elements start visible if JS never runs. */
@@ -287,19 +250,13 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   .reveal[data-reveal="pending"] {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(24px) scale(0.98);
   }
   .reveal[data-reveal="in"] {
     opacity: 1;
     transform: none;
     transition:
-      opacity 700ms var(--ease-out),
-      transform 700ms var(--ease-out);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
+      opacity 600ms var(--ease-out),
+      transform 600ms var(--ease-spring);
   }
 }

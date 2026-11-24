@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav } from "@/lib/site";
 
+/* Desktop links as soft pills; the current page gets the pink fill. */
 export function NavLinks() {
   const pathname = usePathname();
   return (
-    <nav aria-label="Site" className="hidden items-center gap-6 lg:flex">
+    <nav aria-label="Site" className="hidden items-center gap-1 lg:flex">
       {nav.map((n) => {
         const active = pathname === n.href;
         return (
@@ -15,7 +16,7 @@ export function NavLinks() {
             key={n.href}
             href={n.href}
             aria-current={active ? "page" : undefined}
-            className={`link-draw focus-ring pb-0.5 text-[0.82rem] font-bold uppercase tracking-[0.08em] transition-colors hover:text-red ${active ? "text-red" : "text-ink"}`}
+            className={`focus-ring rounded-full px-3.5 py-2 text-[0.95rem] font-semibold transition-colors ${active ? "bg-pink" : "hover:bg-paper-deep"}`}
           >
             {n.label}
           </Link>
